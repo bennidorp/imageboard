@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+   
+    <img id="nodes_logo" src="./nodes_logo.png">
+
+    <div id="main">
+
+        <div id="upload">
+            <h2>Finally! Upload all your nodes without sliding into dm's late at night... No duck pics please.</h2>
+            <label for="title">Image title (optional)</label>
+            <input type="text" name="title" id="title" v-model="title">
+            <label for="username">User name (optional)</label>
+            <input type="text" name="username" id="username" v-model="username">
+            <input type="file" name="file" accept="image/*" v-on:change="fileselected">
+            <button v-on:click="uploadImage">Upload</button>
+        </div>
+
+
+        <h2>Es gibt {{ images.length }} Bilder.</h2>
+
+        <div class="allImages">
+            <div class="imageWrapper" v-on:click="selectedImageID=image.id" v-for="image in images">
+                <img v-bind:src="image.url">
+                {{image.title}} - {{image.username}}
+            </div>
+        </div>
+
+        <image-overlay v-on:close="selectedImageID=false" v-bind:id="selectedImageID" v-if="selectedImageID" />
+
+    </div>
+
+
+    <script type="text/x-template" id="template-image-overlay">
+        <div>
+            <div class="backdrop" v-on:click="closeMe"></div>
+            <div class="overlay">
+
+                <div class="waiting" v-if="!url">Waiting...</div>
+
+                <button v-on:click="closeMe">X</button>
+
+                <img v-bind:src="url" v-if="url">
+
+                <div class="content">
+                    
+                    <img id="nodes_logo_small" src="./nodes_logo.png">
+
+                    <small>{{image-title}} by {{username}} on {{createdAt}}.</small>
+                    
+                    <h2>{{title}}</h2>
+
+                    
+                </div>
+
+            </div>
+        </div>
+    </script>
+
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
